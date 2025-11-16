@@ -1,0 +1,41 @@
+# 기본적으로 텍스트 파일은 전부 LF로 통일
+* text=auto eol=lf
+
+# C#, 쉐이더, yaml, json 등 소스/설정 파일들
+*.cs     text eol=lf
+*.shader text eol=lf
+*.cginc  text eol=lf
+*.hlsl   text eol=lf
+*.compute text eol=lf
+
+*.json   text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.xml    text eol=lf
+*.txt    text eol=lf
+*.asmdef text eol=lf
+*.meta   text eol=lf
+*.unity  text eol=lf
+
+# 이미지/바이너리 파일은 절대 건들지 않게 (줄바꿈 변환 X)
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.psd  binary
+*.fbx  binary
+*.obj  binary
+*.tga  binary
+*.wav  binary
+*.mp3  binary
+*.mp4  binary
+*.mov  binary
+*.ttf  binary
+*.otf  binary
+
+# Unity 빌드 결과물 같은 것들
+*.dll  binary
+*.exe  binary
+*.a    binary
+*.lib  binary
+*.pdb  binary
+
