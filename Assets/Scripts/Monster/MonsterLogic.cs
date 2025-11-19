@@ -22,8 +22,8 @@ public class MonsterLogic : MonoBehaviour
     public float headLookAngleX = 70f;
     public float headLookAngleY = 40f;
     public float headLookSpeed;       // 초당 회전 속도(도)
-    public float minGlanceInterval;   // 최소 힐끗거림 간격
-    public float maxGlanceInterval;   // 최대 힐끗거림 간격
+    public float minLookAroundInterval;   // 최소 주변을 보는 간격
+    public float maxLookAroundInterval;   // 최대 주변을 보는 간격
     [Header("Monster Stuck Settings")]
     public float stuckSpeedEps = 0.05f; // 멈춰있는 것으로 간주하는 속도 임계값
     public float stuckTime = 0.5f;     // 멈춰있는 것으로 간주하는 시간
@@ -47,7 +47,7 @@ public class MonsterLogic : MonoBehaviour
 
     void LateUpdate()
     {
-        // Animator가 뼈를 다 움직인 *다음에* 우리가 원하는 각도로 덮어쓰기
+        // Animator가 뼈를 다 움직인 다음에 우리가 원하는 각도로 덮어쓰기
         if (head != null)
         {
             head.transform.localRotation = headTargetLocalRot;
@@ -78,7 +78,7 @@ public class MonsterLogic : MonoBehaviour
     IEnumerator MonsterTurnRoutine()
     {
         spendTime = 0f;
-        float nextGlanceTime = RandomGlanceTime(Time.time);
+        float nextLookAroundTime = RandomLookAroundTime(Time.time);
         float stuckTimer = 0f;
         Vector3 lastPosition = transform.position;
         // 랜덤 목적지 설정
@@ -122,10 +122,10 @@ public class MonsterLogic : MonoBehaviour
             }
 
             // 머리 힐끗거림 처리
-            if (Time.time >= nextGlanceTime)
+            if (Time.time >= nextLookAroundTime)
             {
                 yield return StartCoroutine(LookLeftOrRightRoutine());
-                nextGlanceTime = RandomGlanceTime(Time.time);
+                nextLookAroundTime = RandomLookAroundTime(Time.time);
             }
             spendTime += Time.deltaTime;
             yield return null;
@@ -160,9 +160,9 @@ public class MonsterLogic : MonoBehaviour
         monsterAgent.SetDestination(center); // 실패 시 중심으로 이동
     }
 
-    float RandomGlanceTime(float from)
+    float RandomLookAroundTime(float from)
     {
-        return from + Random.Range(minGlanceInterval, maxGlanceInterval);
+        return from + Random.Range(minLookAroundInterval, maxLookAroundInterval);
     }
 
     IEnumerator LookLeftOrRightRoutine()
