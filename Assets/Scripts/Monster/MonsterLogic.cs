@@ -27,13 +27,19 @@ public class MonsterLogic : MonoBehaviour
     [Header("Monster Stuck Settings")]
     public float stuckSpeedEps = 0.05f; // 멈춰있는 것으로 간주하는 속도 임계값
     public float stuckTime = 0.5f;     // 멈춰있는 것으로 간주하는 시간
+    [Header("Monster Sound Settings")]
+    public float minSoundInterval;
+    public float maxSoundInterval;
+    float nextSoundTime = 0f;
     // get은 public으로 어디서나 값을 읽을 수 있지만, set은 private으로 이 클래스 내에서만 값을 변경할 수 있음
     public bool IsMonsterTurn { get; private set; }
     public bool FoundPlayer { get; private set; }
     public bool TurnFinished { get; private set; }
+    bool isLookingAround = false;
     Quaternion headBaseLocalRot;
     Quaternion headTargetLocalRot;
     Coroutine turnRoutine;
+    Coroutine headRoutine;
 
     void Awake()
     {
@@ -61,9 +67,12 @@ public class MonsterLogic : MonoBehaviour
         FoundPlayer = false;
         TurnFinished = false;
         IsMonsterTurn = true;
+        isLookingAround = false;
 
         monsterAgent.speed = moveSpeed;
         monsterAgent.isStopped = false;
+
+        nextSoundTime = Time.time + Random.Range(minSoundInterval, maxSoundInterval);
 
         turnRoutine = StartCoroutine(MonsterTurnRoutine());
     }
@@ -88,6 +97,14 @@ public class MonsterLogic : MonoBehaviour
         {
             Debug.Log(spendTime);
             if (FoundPlayer) break;
+
+            // 몬스터 소리 재생
+            if (spendTime >= nextSoundTime)
+            {
+                AudioController.Instance.PlayMonsterSound();
+                nextSoundTime = spendTime + Random.Range(minSoundInterval, maxSoundInterval);
+            }
+
             // 플레이어 발견 여부 갱신
             if (!FoundPlayer && monsterVision != null && monsterVision.CanSeePlayer())
             {
@@ -122,9 +139,9 @@ public class MonsterLogic : MonoBehaviour
             }
 
             // 머리 힐끗거림 처리
-            if (Time.time >= nextLookAroundTime)
+            if (Time.time >= nextLookAroundTime && !isLookingAround && headRoutine == null)
             {
-                yield return StartCoroutine(LookLeftOrRightRoutine());
+                headRoutine = StartCoroutine(LookLeftOrRightRoutine());
                 nextLookAroundTime = RandomLookAroundTime(Time.time);
             }
             spendTime += Time.deltaTime;
@@ -136,6 +153,16 @@ public class MonsterLogic : MonoBehaviour
         if (!FoundPlayer)
         {
             monsterAgent.isStopped = true;
+
+            // 남아있는 주변 보는 코루틴 종료
+            if (headRoutine != null)
+            {
+                StopCoroutine(headRoutine);
+                headRoutine = null;
+            }
+            isLookingAround = false;
+
+            // 마지막으로 좌우로 힐끗거리는 동작 실행
             yield return StartCoroutine(FinalScanRoutine());
         }
         // 턴 종료
@@ -167,7 +194,12 @@ public class MonsterLogic : MonoBehaviour
 
     IEnumerator LookLeftOrRightRoutine()
     {
-        if (head == null) yield break;
+        if (head == null || isLookingAround)
+        {
+            headRoutine = null;
+            yield break;
+        }
+        isLookingAround = true;
 
         // 왼쪽 또는 오른쪽으로 힐끗거림
         float targetAngleX = Random.value > 0.5f ? headLookAngleX : -headLookAngleX;
@@ -180,11 +212,18 @@ public class MonsterLogic : MonoBehaviour
 
         // 머리 회전 코루틴 실행
         yield return RotateHeadRoutine(start, target);
-        if (FoundPlayer) yield break;
+        if (FoundPlayer)
+        {
+            isLookingAround = false;
+            headRoutine = null;
+            yield break;
+        }
         // 잠시 대기
         yield return new WaitForSeconds(0.2f);
         // 머리 원위치 회전 코루틴 실행
         yield return RotateHeadRoutine(head.transform.localRotation, headBaseLocalRot);
+        isLookingAround = false;
+        headRoutine = null;
         if (FoundPlayer) yield break;
     }
 
@@ -219,12 +258,13 @@ public class MonsterLogic : MonoBehaviour
     {
         if (head == null) yield break;
 
+        Quaternion now = head.transform.localRotation;
         Quaternion center = headBaseLocalRot;
-        Quaternion left = headBaseLocalRot * Quaternion.Euler(headLookAngleX, -headLookAngleY, -30f);
-        Quaternion right = headBaseLocalRot * Quaternion.Euler(-headLookAngleX, headLookAngleY, -30f);
+        Quaternion left = center * Quaternion.Euler(headLookAngleX, -headLookAngleY, -30f);
+        Quaternion right = center * Quaternion.Euler(-headLookAngleX, headLookAngleY, -30f);
 
         // 왼쪽으로 힐끗
-        yield return RotateHeadRoutine(center, left);
+        yield return RotateHeadRoutine(now, left);
         if (FoundPlayer) yield break;
 
         // 오른쪽으로 힐끗

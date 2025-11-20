@@ -19,13 +19,16 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // 게임 상태에 따른 로직 처리
-
+        if (monsterLogic.FoundPlayer && !(currentState == GameState.GameOver))
+        {
+            ChangeState(GameState.GameOver);
+        }
     }
     
     void ChangeState(GameState newState)
     {
         currentState = newState;
+        AudioController.Instance.ChangeBGM(currentState); // BGM 변경
         switch (currentState)
         {
             case GameState.PlayerTurn:
