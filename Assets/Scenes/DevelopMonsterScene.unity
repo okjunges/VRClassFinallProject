@@ -3217,7 +3217,7 @@ MonoBehaviour:
   moveSpeed: 5
   runSpeed: 8
   mouseSensitivity: 2
-  playerCamera: {fileID: 0}
+  playerCamera: {fileID: 2001570636}
   interactionDistance: 3
   animator: {fileID: 677882130}
   playerModel: {fileID: 677882129}
