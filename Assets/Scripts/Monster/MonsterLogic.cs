@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using DavidJalbert.LowPolyPeople;
-using UnityEditor.VisionOS;
 using UnityEngine;
 using UnityEngine.AI;
 
