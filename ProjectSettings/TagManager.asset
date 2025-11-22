@@ -10,6 +10,7 @@ TagManager:
   - Tile
   - Button
   - Trigger
+  - PlayerCamera
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Wall
   - Water
   - UI
-  - 
+  - Trigger
   - 
   - 
   - 
