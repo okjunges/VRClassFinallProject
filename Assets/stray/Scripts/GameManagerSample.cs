@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManagerSample : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static GameManagerSample Instance { get; private set; }
 
     public enum GamePhase
     {

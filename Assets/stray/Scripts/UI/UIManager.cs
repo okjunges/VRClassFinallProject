@@ -89,29 +89,29 @@ public class UIManager : MonoBehaviour
         GUILayout.BeginVertical();
 
         // Game Manager Stats
-        if (GameManager.Instance != null)
+        if (GameManagerSample.Instance != null)
         {
-            GUILayout.Label($"Phase: {GameManager.Instance.CurrentPhase}");
-            GUILayout.Label($"Time Remaining: {GameManager.Instance.phaseTimer:F1}s");
+            GUILayout.Label($"Phase: {GameManagerSample.Instance.CurrentPhase}");
+            GUILayout.Label($"Time Remaining: {GameManagerSample.Instance.phaseTimer:F1}s");
             
             GUILayout.Space(10);
             GUILayout.Label("Phase Settings:");
             
             GUILayout.BeginHorizontal();
             GUILayout.Label("Survivor Time:");
-            string survivorTimeStr = GUILayout.TextField(GameManager.Instance.SurvivorPhaseDuration.ToString(), 5);
-            if (float.TryParse(survivorTimeStr, out float sTime)) GameManager.Instance.SurvivorPhaseDuration = sTime;
+            string survivorTimeStr = GUILayout.TextField(GameManagerSample.Instance.SurvivorPhaseDuration.ToString(), 5);
+            if (float.TryParse(survivorTimeStr, out float sTime)) GameManagerSample.Instance.SurvivorPhaseDuration = sTime;
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Chaser Time:");
-            string chaserTimeStr = GUILayout.TextField(GameManager.Instance.ChaserPhaseDuration.ToString(), 5);
-            if (float.TryParse(chaserTimeStr, out float cTime)) GameManager.Instance.ChaserPhaseDuration = cTime;
+            string chaserTimeStr = GUILayout.TextField(GameManagerSample.Instance.ChaserPhaseDuration.ToString(), 5);
+            if (float.TryParse(chaserTimeStr, out float cTime)) GameManagerSample.Instance.ChaserPhaseDuration = cTime;
             GUILayout.EndHorizontal();
             
             if (GUILayout.Button("Skip Phase"))
             {
-                GameManager.Instance.SkipPhase();
+                GameManagerSample.Instance.SkipPhase();
             }
         }
 
