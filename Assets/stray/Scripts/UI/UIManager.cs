@@ -131,15 +131,15 @@ public class UIManager : MonoBehaviour
         GUILayout.Space(10);
 
         // Chaser Stats
-        if (ChaserAI.Instance != null)
-        {
-            GUILayout.Label("Chaser Settings:");
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Speed:");
-            ChaserAI.Instance.Speed = GUILayout.HorizontalSlider(ChaserAI.Instance.Speed, 0f, 20f);
-            GUILayout.Label(ChaserAI.Instance.Speed.ToString("F1"));
-            GUILayout.EndHorizontal();
-        }
+        // if (ChaserAI.Instance != null)
+        // {
+        //     GUILayout.Label("Chaser Settings:");
+        //     GUILayout.BeginHorizontal();
+        //     GUILayout.Label("Speed:");
+        //     ChaserAI.Instance.Speed = GUILayout.HorizontalSlider(ChaserAI.Instance.Speed, 0f, 20f);
+        //     GUILayout.Label(ChaserAI.Instance.Speed.ToString("F1"));
+        //     GUILayout.EndHorizontal();
+        // }
 
         GUILayout.Space(20);
         if (GUILayout.Button("Restart Game"))

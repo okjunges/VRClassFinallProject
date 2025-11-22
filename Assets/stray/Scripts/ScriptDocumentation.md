@@ -31,78 +31,6 @@
 | :--- | :--- | :--- | :--- |
 | `void StartSurvivorPhase()` | 없음 | 없음 | 게임 상태를 `Survivor`로 변경하고 타이머를 초기화합니다. 플레이어 모델을 숨깁니다. |
 | `void StartChaserPhase()` | 없음 | 없음 | 게임 상태를 `Chaser`로 변경하고 타이머를 초기화하며, `ChaserAI`에게 추적 시작을 알립니다. 플레이어 모델을 표시하고 Idle 애니메이션을 재생합니다. |
-| `void SkipPhase()` | 없음 | 없음 | 현재 페이즈의 남은 시간을 0으로 만들어 즉시 다음 페이즈로 넘깁니다. (Debug용) |
-| `void SurvivorWin()` | 없음 | 없음 | 게임 상태를 `GameOver`로 변경하고 승리 로그를 출력합니다. |
-| `void SurvivorLose()` | 없음 | 없음 | 게임 상태를 `GameOver`로 변경하고 패배 로그를 출력합니다. |
-
----
-
-## 2. MapControl.cs
-타일 그리드를 관리하고 타일 회전 로직을 처리하는 클래스입니다.
-
-### 설명
-- **역할**: 맵의 타일들을 2차원 배열로 관리하고, 플레이어의 상호작용 요청 시 타일을 회전시킵니다. 회전 전 `GridVerify`를 통해 유효성을 검사합니다.
-
-### 필드 (Fields)
-| 접근 제어자 | 타입 | 이름 | 설명 |
-| :--- | :--- | :--- | :--- |
-| `[SerializeField] private` | `Tile[]` | `tiles` | 맵에 존재하는 모든 타일 오브젝트들의 배열입니다. 초기화 시 "Tile" 태그로 자동 검색됩니다. |
-| `[SerializeField] private` | `int` | `width` | 그리드의 가로 크기입니다. 기본값: 5 |
-| `[SerializeField] private` | `int` | `height` | 그리드의 세로 크기입니다. 기본값: 5 |
-
-### 메서드 (Methods)
-| 메서드 서명 | 입력 (Input) | 출력 (Output) | 동작 설명 |
-| :--- | :--- | :--- | :--- |
-| `void InitializeGrid()` | 없음 | 없음 | "Tile" 태그를 가진 객체들을 찾아 `tiles` 배열을 구성하고, 좌표에 맞춰 `tileGrid`에 매핑합니다. |
-| `bool TryRotateTile(Tile tile)` | `Tile tile` (회전할 타일) | `bool` (성공 여부) | 1. Survivor 페이즈인지 확인합니다.<br>2. 타일을 시계방향으로 회전시킵니다.<br>3. `GridVerify`로 맵 유효성을 검사합니다.<br>4. 유효하지 않으면 타일을 원래대로 되돌리고 `false`를 반환합니다. |
-| `Tile GetTileAt(int x, int y)` | `int x`, `int y` | `Tile` | 해당 그리드 좌표에 있는 타일 객체를 반환합니다. |
-
----
-
-## 3. GridVerify.cs
-맵의 유효성(추적자의 경로 존재 여부)을 검증하는 클래스입니다.
-
-### 설명
-- **역할**: BFS(너비 우선 탐색) 알고리즘을 사용하여 추적자가 플레이어(또는 목표 지점)까지 도달할 수 있는지 확인합니다.
-
-### 필드 (Fields)
-| 접근 제어자 | 타입 | 이름 | 설명 |
-| :--- | :--- | :--- | :--- |
-| `[SerializeField] private` | `Vector2Int` | `chaserStartPos` | 추적자의 시작 그리드 좌표입니다. 기본값: (0, 0) |
-
-### 메서드 (Methods)
-| 메서드 서명 | 입력 (Input) | 출력 (Output) | 동작 설명 |
-| :--- | :--- | :--- | :--- |
-| `bool IsMapValid(Tile[,] grid, int width, int height)` | `Tile[,] grid` (타일 배열), `int width`, `int height` | `bool` (유효 여부) | 현재 플레이어 위치를 가져와 `HasPath`를 호출하여 경로 존재 여부를 반환합니다. |
-| `bool HasPath(...)` | `grid`, `width`, `height`, `start`, `end` | `bool` | BFS를 수행하여 `start`에서 `end`까지 연결된 경로가 있는지 탐색합니다. 벽(`hasWall`)이 없는 방향으로만 이동 가능합니다. |
-
----
-
-## 4. Tile.cs
-개별 타일의 데이터와 동작을 정의하는 클래스입니다.
-
-### 설명
-- **역할**: 타일의 4방향(북, 동, 남, 서)에 대한 벽, 문, 램프 상태를 저장하고, 회전 기능을 제공합니다.
-
-### 구조체 (Structs)
-- **Side**: 타일의 한 면에 대한 정보를 담습니다. (`hasWall`, `hasDoor`, `hasLampOn`, `hasLampOff`)
-
-### 필드 (Fields)
-| 접근 제어자 | 타입 | 이름 | 설명 |
-| :--- | :--- | :--- | :--- |
-| `public` | `Side` | `north`, `east`, `south`, `west` | 각 방향의 면 정보입니다. |
-| `public` | `int` | `x`, `y` | 그리드 상의 좌표입니다. |
-
-### 메서드 (Methods)
-| 메서드 서명 | 입력 (Input) | 출력 (Output) | 동작 설명 |
-| :--- | :--- | :--- | :--- |
-| `void RotateClockwise()` | 없음 | 없음 | 타일 오브젝트를 Y축으로 90도 회전시키고, 논리적인 `Side` 데이터(north, east...)도 시계방향으로 교체합니다. |
-| `Side GetSide(int direction)` | `int direction` (0:N, 1:E, 2:S, 3:W) | `Side` | 해당 방향의 `Side` 데이터를 반환합니다. |
-
----
-
-## 5. PlayerControl.cs
-플레이어의 이동과 상호작용을 처리하는 클래스입니다.
 
 ### 설명
 - **역할**: FPS 시점 제어, WASD 이동, 'E' 키 상호작용, 페이즈별 모델 가시성 제어 등을 담당합니다.
@@ -135,23 +63,6 @@
 | `void HandleMouseLook()` | 없음 | 없음 | 마우스 입력으로 시점을 회전합니다. `LAlt` 키를 누르면 커서를 풀고 시점 이동을 일시 정지합니다. |
 | `void HandleMovement()` | 없음 | 없음 | `GetAxisRaw`를 사용하여 WASD 이동을 처리합니다. 입력이 없으면 관성을 제거합니다. |
 | `void HandleInteraction()` | 없음 | 없음 | `E` 키를 누르면 현재 밟고 있는 타일(`gridPosition`)을 회전시킵니다. |
-| `void SetModelVisibility(bool isVisible)` | `bool` | 없음 | 플레이어 모델(`playerModel`)의 활성화 상태를 설정합니다. |
-| `void PlayIdle()` | 없음 | 없음 | Idle 애니메이션 트리거를 실행합니다. |
-| `void Die()` | 없음 | 없음 | Death 애니메이션 트리거를 실행하고 컴포넌트를 비활성화합니다. |
-
----
-
-## 6. ChaserAI.cs
-추적자(적)의 AI를 담당하는 클래스입니다.
-
-### 설명
-- **역할**: Chaser 페이즈가 되면 플레이어를 향해 이동하고, 플레이어와 접촉 시 게임을 종료시킵니다.
-
-### 필드 (Fields)
-| 접근 제어자 | 타입 | 이름 | 설명 |
-| :--- | :--- | :--- | :--- |
-| `public static` | `ChaserAI` | `Instance` | 싱글톤 인스턴스입니다. |
-| `[SerializeField] private` | `float` | `speed` | 이동 속도입니다. |
 | `[SerializeField] private` | `float` | `catchDistance` | 플레이어를 잡았다고 판단하는 거리입니다. |
 
 ### 프로퍼티 (Properties)
@@ -208,4 +119,19 @@
 | 메서드 서명 | 입력 (Input) | 출력 (Output) | 동작 설명 |
 | :--- | :--- | :--- | :--- |
 | `void OnTriggerEnter(Collider other)` | `Collider` | 없음 | 태그가 일치하면 `UIManager.Instance.SetInteractionPrompt(true)`를 호출합니다. |
-| `void OnTriggerExit(Collider other)` | `Collider` | 없음 | 태그가 일치하면 `UIManager.Instance.SetInteractionPrompt(false)`를 호출합니다. |
+## 9. CrossingController.cs
+상호작용 시 연결된 문(Door) 객체들을 번갈아가며 활성화/비활성화하는 클래스입니다.
+
+### 설명
+- **역할**: `PlayerControl`로부터 상호작용 신호를 받으면 리스트에 등록된 문들의 `Active` 상태를 토글합니다.
+- **사용법**: Trigger 객체에 이 컴포넌트를 추가하고, `doors` 리스트에 제어할 문 오브젝트들을 할당하세요. 문들이 번갈아 열리게 하려면 초기 상태를 서로 다르게(하나는 켜고 하나는 끄고) 설정하면 됩니다.
+
+### 필드 (Fields)
+| 접근 제어자 | 타입 | 이름 | 설명 |
+| :--- | :--- | :--- | :--- |
+| `[SerializeField] private` | `List<GameObject>` | `doors` | 제어할 문 오브젝트들의 리스트입니다. |
+
+### 메서드 (Methods)
+| 메서드 서명 | 입력 (Input) | 출력 (Output) | 동작 설명 |
+| :--- | :--- | :--- | :--- |
+| `void Interact()` | 없음 | 없음 | 등록된 모든 문의 `activeSelf` 상태를 반전시킵니다. |

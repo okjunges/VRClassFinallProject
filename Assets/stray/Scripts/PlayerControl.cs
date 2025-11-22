@@ -54,7 +54,6 @@ public class PlayerControl : MonoBehaviour
         HandleMouseLook();
         HandleMovement();
         HandleInteraction();
-        UpdateGridPosition();
     }
 
     void HandleMouseLook()
@@ -126,19 +125,37 @@ public class PlayerControl : MonoBehaviour
         this.enabled = false;
     }
 
+    private GameObject currentTrigger;
+
     void HandleInteraction()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && currentTrigger != null)
         {
-            
+            if (MapControl.Instance != null)
+            {
+                MapControl.Instance.InteractWith(currentTrigger);
+            }
         }
     }
 
-    void UpdateGridPosition()
+    private void OnTriggerEnter(Collider other)
     {
-        // Calculate grid position based on world position
-        // Assuming 1 unit = 1 tile size, and origin at (0,0)
-        // Adjust scale factor as needed
-        gridPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+        if (other.CompareTag("Trigger"))
+        {
+            currentTrigger = other.gameObject;
+            if (currentTrigger.GetComponent<CrossingController>() != null)
+            {
+                UIManager.Instance.SetInteractionPrompt(true, "[E] Interact");
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Trigger") && currentTrigger == other.gameObject)
+        {
+            currentTrigger = null;
+            UIManager.Instance.SetInteractionPrompt(false, "");
+        }
     }
 }

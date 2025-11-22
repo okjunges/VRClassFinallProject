@@ -16,10 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float survivorPhaseDuration = 60f;
     [SerializeField] private float chaserPhaseDuration = 60f;
     
-    public float phaseTimer; // Made public for Debug UI, keep public or use property?
-    // Debug UI accesses this directly. Let's keep it public for now or make it a property.
-    // User asked "possible range", so let's keep it simple for DebugUI compatibility or update DebugUI.
-    // Since DebugUI is separate, let's make properties.
+    public float phaseTimer; 
     
     public float SurvivorPhaseDuration { get { return survivorPhaseDuration; } set { survivorPhaseDuration = value; } }
     public float ChaserPhaseDuration { get { return chaserPhaseDuration; } set { chaserPhaseDuration = value; } }
@@ -54,7 +51,6 @@ public class GameManager : MonoBehaviour
         CurrentPhase = GamePhase.Survivor;
         phaseTimer = survivorPhaseDuration;
         Debug.Log("Survivor Phase Started");
-        // Enable interaction, disable chaser
         
         if (PlayerControl.Instance != null) {PlayerControl.Instance.SetModelVisibility(false);}
     }
@@ -64,8 +60,12 @@ public class GameManager : MonoBehaviour
         CurrentPhase = GamePhase.Chaser;
         phaseTimer = chaserPhaseDuration;
         Debug.Log("Chaser Phase Started");
-        // Disable interaction, enable chaser
-        if (ChaserAI.Instance != null) {ChaserAI.Instance.StartChasing();}
+        
+        // Enable chaser
+        // if (ChaserAI.Instance != null)
+        // {
+        //     ChaserAI.Instance.StartChasing();
+        // }
         
         if (PlayerControl.Instance != null)
         {
