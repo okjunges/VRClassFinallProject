@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Monster
   - MonsterCamera
+  - Map
+  - Tile
+  - Button
+  - Trigger
   layers:
   - Default
   - TransparentFX
