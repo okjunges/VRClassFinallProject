@@ -3,11 +3,13 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     public static PlayerControl Instance { get; private set; }
-    
+
+    public float currentTime { get; private set; }
+    [SerializeField] private Camera playerCamera;
+    [SerializeField] private float turnTime;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float runSpeed = 8f;
     [SerializeField] private float mouseSensitivity = 2f;
-    [SerializeField] private Camera playerCamera;
     [SerializeField] private float interactionDistance = 3f;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject playerModel; // Reference to the visual model
@@ -22,6 +24,7 @@ public class PlayerControl : MonoBehaviour
     private string currentAnimState = "idle";
     private float verticalRotation = 0f;
     private Rigidbody rb;
+    public bool isMyTurn { get; private set; }
 
     void Awake()
     {
@@ -39,9 +42,7 @@ public class PlayerControl : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.identity;
         }
         
-        // Lock cursor for FPS control
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        isMyTurn = false;
     }
 
     public void SetModelVisibility(bool isVisible)
@@ -51,9 +52,29 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
+        if (!isMyTurn) return;
+        currentTime += Time.deltaTime;
+        if (currentTime >= turnTime)
+        {
+            isMyTurn = false;
+            Cursor.lockState = CursorLockMode.None;   // 커서 잠금 해제
+            Cursor.visible = true; 
+            Debug.Log("플레이어 턴 종료");
+            return;
+        }
         HandleMouseLook();
         HandleMovement();
         HandleInteraction();
+    }
+    public void StartPlayerTurn(float time)
+    {
+        Debug.Log("플레이어 턴 시작 : " + time + "초");
+        // Lock cursor for FPS control
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        turnTime = time;
+        currentTime = 0f;
+        isMyTurn = true;
     }
 
     void HandleMouseLook()
@@ -134,6 +155,7 @@ public class PlayerControl : MonoBehaviour
             if (MapControl.Instance != null)
             {
                 MapControl.Instance.InteractWith(currentTrigger);
+                AudioController.Instance.PlayDoorSound();
             }
         }
     }
@@ -156,6 +178,21 @@ public class PlayerControl : MonoBehaviour
         {
             currentTrigger = null;
             UIManager.Instance.SetInteractionPrompt(false, "");
+        }
+    }
+
+    public void OffCamera()
+    {
+        if (playerCamera != null)
+        {
+            playerCamera.enabled = false;
+        }
+    }
+    public void OnCamera()
+    {
+        if (playerCamera != null)
+        {
+            playerCamera.enabled = true;
         }
     }
 }

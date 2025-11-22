@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class MonsterLogic : MonoBehaviour
 {
+    public static MonsterLogic Instance;
+    private Camera monsterCamera;
     public Animator monsterAnim;
     public NavMeshAgent monsterAgent;
     public MonsterVision monsterVision;
@@ -42,9 +44,18 @@ public class MonsterLogic : MonoBehaviour
 
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         monsterAgent = GetComponent<NavMeshAgent>();
         monsterVision = GetComponent<MonsterVision>();
         monsterAnim = GetComponent<Animator>();
+        monsterCamera = GameObject.FindWithTag("MonsterCamera").GetComponent<Camera>();
         // 머리의 초기 로컬 회전값 저장 (Quaternion.identity = 기본 회전값으로 (0,0,0)을 의미)
         headBaseLocalRot = head != null ? head.transform.localRotation : Quaternion.identity;
         headTargetLocalRot = headBaseLocalRot;
@@ -94,14 +105,14 @@ public class MonsterLogic : MonoBehaviour
         monsterAnim.SetBool("Walk", true);
         while (spendTime < turnDuration)
         {
-            Debug.Log(spendTime);
             if (FoundPlayer) break;
 
             // 몬스터 소리 재생
-            if (spendTime >= nextSoundTime)
+            if (Time.time >= nextSoundTime)
             {
+                Debug.Log("몬스터 소리 재생");
                 AudioController.Instance.PlayMonsterSound();
-                nextSoundTime = spendTime + Random.Range(minSoundInterval, maxSoundInterval);
+                nextSoundTime = Time.time + Random.Range(minSoundInterval, maxSoundInterval);
             }
 
             // 플레이어 발견 여부 갱신
@@ -272,5 +283,20 @@ public class MonsterLogic : MonoBehaviour
 
         // 중앙으로 복귀
         yield return RotateHeadRoutine(right, center);
+    }
+
+    public void OffCamera()
+    {
+        if (monsterCamera != null)
+        {
+            monsterCamera.enabled = false;
+        }
+    }
+    public void OnCamera()
+    {
+        if (monsterCamera != null)
+        {
+            monsterCamera.enabled = true;
+        }
     }
 }
