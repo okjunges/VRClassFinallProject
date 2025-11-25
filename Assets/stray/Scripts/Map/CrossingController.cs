@@ -25,6 +25,9 @@ public class CrossingController : MonoBehaviour
                     doors[i].Close();
                 }
             }
+
+            // Update index to the next one so the first interaction opens the next door
+            currentDoorIndex = (currentDoorIndex + 1) % doors.Count;
         }
     }
 
