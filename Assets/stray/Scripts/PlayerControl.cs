@@ -154,9 +154,10 @@ public class PlayerControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && currentTrigger != null)
         {
-            if (MapControl.Instance != null)
+            MapControl mapControl = GameObject.FindWithTag("Map").GetComponent<MapControl>();
+            if (mapControl != null)
             {
-                MapControl.Instance.InteractWith(currentTrigger);
+                mapControl.InteractWith(currentTrigger);
                 AudioController.Instance.PlayDoorSound();
             }
         }

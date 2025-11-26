@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class MapControl : MonoBehaviour
 {
-    public static MapControl Instance { get; private set; }
 
     [SerializeField] private List<CrossingController> crossings = new List<CrossingController>();
-
-    void Awake()
-    {
-        if (Instance == null) Instance = this;
-    }
 
     void Start()
     {

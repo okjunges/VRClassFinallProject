@@ -456,7 +456,7 @@ MonoBehaviour:
   maxTime: 60
   currentTime: 0
   mapPrefabs:
-  - {fileID: 6370204303032665671, guid: 4d6a51bf29d8d6141aab4f1182330448, type: 3}
+  - {fileID: 4418025299618607156, guid: 72cbcd4efc4edcd47a5ee1021093a349, type: 3}
   player: {fileID: 1367410853}
   enemy: {fileID: 0}
 --- !u!1 &1646190155

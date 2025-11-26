@@ -2326,7 +2326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  monsterTurnTime: 15
+  monsterTurnTime: 3
   playerTurnTime: 15
   maxRound: 0
   roundCount: 0
