@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum GameState
 {
+    None,
     PlayerTurn,
     MonsterTurn,
     GameOver,
