@@ -14,7 +14,8 @@ public class GM : MonoBehaviour
     public float currentTime;
 
     public List<GameObject> mapPrefabs;
-    public GameObject player ;
+    public GameObject player;
+    public GameObject enemy;
     private GameObject currentMapInstance;
 
     public static GM Instance;
@@ -96,7 +97,7 @@ public class GM : MonoBehaviour
             case GameState.MonsterTurn:
                 // 몬스터 턴 시작
                 if (BakeNewMap.Instance != null)
-                    BakeNewMap.Instance.BakeNow();                       // 벽 바뀐 맵 다시 굽기
+                    BakeNewMap.Instance.BakeNow(); // 벽 바뀐 맵 다시 굽기
                 
                 if (monsterLogic != null)
                     monsterLogic.StartMonsterTurn(monsterTurnTime);
@@ -115,6 +116,7 @@ public class GM : MonoBehaviour
                     {
                         currentMapInstance = Instantiate(mapPrefabs[roundCount - 1]);
                         MovePlayerToSpawnPoint();
+                        MoveEnemyToSpawnPoint();
                     }
 
                     ChangeState(GameState.PlayerTurn);
@@ -145,5 +147,23 @@ public class GM : MonoBehaviour
         }
 
         player.transform.position = targetPos;
+    }
+    void MoveEnemyToSpawnPoint()
+    {
+        if (enemy == null) return;
+        
+        Vector3 targetPos = new Vector3(1.5f, 0f, 1.5f); // Default position
+
+        if (currentMapInstance != null)
+        {
+            Transform spawnPoint = currentMapInstance.transform.Find("SpawnPoint");
+            if (spawnPoint != null)
+            {
+                targetPos = spawnPoint.position;
+                enemy.transform.rotation = spawnPoint.rotation;
+            }
+        }
+
+        enemy.transform.position = targetPos;
     }
 }
