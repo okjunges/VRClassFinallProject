@@ -41,6 +41,6 @@ public class GameBtns : MonoBehaviour
     }
     public void OnClickRestartBtn()
     {
-        SceneManager.LoadScene("DevelopMonsterScene");
+        SceneManager.LoadScene("GameScene");
     }
 }

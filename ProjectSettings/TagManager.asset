@@ -11,6 +11,7 @@ TagManager:
   - Button
   - Trigger
   - PlayerCamera
+  - MapCenter
   layers:
   - Default
   - TransparentFX

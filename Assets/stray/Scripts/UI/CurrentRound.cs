@@ -7,20 +7,13 @@ public class CurrentRound : MonoBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI roundText;
-    [SerializeField] private GM gm;
 
     
-    void Start()
+    void Update()
     {
-        if (gm == null)
+        if (roundText != null)
         {
-            gm = GM.Instance;
-            if (gm == null) gm = FindObjectOfType<GM>();
-        }
-
-        if (gm != null && roundText != null)
-        {
-            roundText.text = "Round " + gm.roundCount + " / " + gm.maxRound;
+            roundText.text = "Round " + GameManager.Instance.roundCount.ToString() + " / " + GameManager.Instance.maxRound.ToString();
         }
     }
 }

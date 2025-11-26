@@ -7,23 +7,20 @@ using TMPro;
 public class TimeBar : MonoBehaviour
 {
 
-    [SerializeField] private Image Timebar;
-    [SerializeField] private GM gm;
-
-    void Start()
-    {
-        if (gm == null)
-        {
-            gm = GM.Instance;
-            if (gm == null) gm = FindObjectOfType<GM>();
-        }
-    }
+    [SerializeField] private Image timebar;
 
     void Update()
     {
-        if (gm != null && Timebar != null)
+        if (timebar != null)
         {
-            Timebar.fillAmount = gm.currentTime / gm.maxTime;
+            if (GameManager.Instance.currentState == GameState.PlayerTurn)
+            {
+                timebar.fillAmount = (PlayerControl.Instance.turnTime - PlayerControl.Instance.currentTime) / PlayerControl.Instance.turnTime;
+            }
+            else if (GameManager.Instance.currentState == GameState.MonsterTurn)
+            {
+                timebar.fillAmount = (MonsterLogic.Instance.turnDuration - MonsterLogic.Instance.spendTime) / MonsterLogic.Instance.turnDuration;
+            }
         }
     }
 }

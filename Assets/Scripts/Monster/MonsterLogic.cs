@@ -8,6 +8,7 @@ public class MonsterLogic : MonoBehaviour
 {
     public static MonsterLogic Instance;
     private Camera monsterCamera;
+    private AudioListener monsterAudio;
     public Animator monsterAnim;
     public NavMeshAgent monsterAgent;
     public MonsterVision monsterVision;
@@ -56,6 +57,7 @@ public class MonsterLogic : MonoBehaviour
         monsterVision = GetComponent<MonsterVision>();
         monsterAnim = GetComponent<Animator>();
         monsterCamera = GameObject.FindWithTag("MonsterCamera").GetComponent<Camera>();
+        monsterAudio = monsterCamera.GetComponent<AudioListener>();
         // 머리의 초기 로컬 회전값 저장 (Quaternion.identity = 기본 회전값으로 (0,0,0)을 의미)
         headBaseLocalRot = head != null ? head.transform.localRotation : Quaternion.identity;
         headTargetLocalRot = headBaseLocalRot;
@@ -72,6 +74,7 @@ public class MonsterLogic : MonoBehaviour
 
     public void StartMonsterTurn(float duration)
     {
+        mapCenter = GameObject.FindWithTag("MapCenter").transform;
         if (IsMonsterTurn) return; // 이미 몬스터 턴이면 무시
         turnDuration = duration;
         FoundPlayer = false;
@@ -289,6 +292,7 @@ public class MonsterLogic : MonoBehaviour
     {
         if (monsterCamera != null)
         {
+            monsterAudio.enabled = false;
             monsterCamera.enabled = false;
         }
     }
@@ -297,6 +301,7 @@ public class MonsterLogic : MonoBehaviour
         if (monsterCamera != null)
         {
             monsterCamera.enabled = true;
+            monsterAudio.enabled = true;
         }
     }
 }

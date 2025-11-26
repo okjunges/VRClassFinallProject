@@ -11109,7 +11109,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1880137641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11122,7 +11122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d1cd726097bb24fb9b69faaa89f507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showDebugUI: 1
+  showDebugUI: 0
   windowRect:
     serializedVersion: 2
     x: 20
@@ -11822,7 +11822,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   monsterTurnTime: 10
-  playerTurnTime: 20
+  playerTurnTime: 10
   maxRound: 2
   roundCount: 0
   UI: {fileID: 1880137640}

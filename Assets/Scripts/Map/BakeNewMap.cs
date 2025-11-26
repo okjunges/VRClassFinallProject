@@ -8,6 +8,7 @@ public class BakeNewMap : MonoBehaviour
 {
     public static BakeNewMap Instance;
     public NavMeshSurface surface;
+    [SerializeField] private GameObject currentMapInstance;
 
     void Awake()
     {
@@ -24,6 +25,8 @@ public class BakeNewMap : MonoBehaviour
 
     public void BakeNow()
     {
+        currentMapInstance = GameObject.FindWithTag("Map");
+        surface = currentMapInstance.GetComponent<NavMeshSurface>();
         surface.BuildNavMesh();
     }
 }

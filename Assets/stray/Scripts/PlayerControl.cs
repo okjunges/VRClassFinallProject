@@ -6,7 +6,8 @@ public class PlayerControl : MonoBehaviour
 
     public float currentTime { get; private set; }
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private float turnTime;
+    [SerializeField] private AudioListener playerAudio;
+    public float turnTime;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float runSpeed = 8f;
     [SerializeField] private float mouseSensitivity = 2f;
@@ -30,6 +31,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         rb = GetComponent<Rigidbody>();
+        playerAudio = playerCamera.GetComponent<AudioListener>();
     }
 
     void Start()
@@ -186,6 +188,7 @@ public class PlayerControl : MonoBehaviour
         if (playerCamera != null)
         {
             playerCamera.enabled = false;
+            playerAudio.enabled = false;
         }
     }
     public void OnCamera()
@@ -193,6 +196,7 @@ public class PlayerControl : MonoBehaviour
         if (playerCamera != null)
         {
             playerCamera.enabled = true;
+            playerAudio.enabled = true;
         }
     }
 }
