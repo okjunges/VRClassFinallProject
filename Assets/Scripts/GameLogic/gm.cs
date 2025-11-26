@@ -52,7 +52,7 @@ public class GM : MonoBehaviour
         }
 
         // 테스트 용
-        ChangeState(GameState.MonsterTurn);
+        ChangeState(currentState);
     }
 
     void Update()
@@ -93,6 +93,7 @@ public class GM : MonoBehaviour
         {
             case GameState.PlayerTurn:
                 // 플레이어 턴 시작
+                PlayerControl.Instance.StartPlayerTurn(maxTime);
                 break;
             case GameState.MonsterTurn:
                 // 몬스터 턴 시작

@@ -190,6 +190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6101340049182731326, guid: 0da9d8c698222e14ea641c81588dc22d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -295,10 +299,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66470aa06f7f2e04bb1ef8327429baa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 1646190157}
+  playerAudio: {fileID: 0}
+  turnTime: 0
   moveSpeed: 5
   runSpeed: 6
   mouseSensitivity: 2
-  playerCamera: {fileID: 1646190157}
   interactionDistance: 3
   animator: {fileID: 1367410855}
   playerModel: {fileID: 1204028365}
@@ -358,6 +364,33 @@ CapsuleCollider:
   m_Height: 1.8440616
   m_Direction: 1
   m_Center: {x: 0.0034922361, y: 0.92366135, z: 0}
+--- !u!1 &1566887374 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9024025121165105248, guid: e85505bb0dc0f004e8fd137332a62fc8, type: 3}
+  m_PrefabInstance: {fileID: 896264809688884821}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1566887378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566887374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d1cd726097bb24fb9b69faaa89f507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showDebugUI: 0
+  windowRect:
+    serializedVersion: 2
+    x: 20
+    y: 20
+    width: 250
+    height: 300
+  promptPosition: {x: 0.5, y: 0.8}
+  promptFontSize: 30
+  promptTextColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1609069663
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,7 +448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d7e26997874474a9059156ae27c8e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
+  currentState: 1
   monsterLogic: {fileID: 0}
   monsterTurnTime: 60
   roundCount: 0
@@ -423,9 +456,9 @@ MonoBehaviour:
   maxTime: 60
   currentTime: 0
   mapPrefabs:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 6370204303032665671, guid: 4d6a51bf29d8d6141aab4f1182330448, type: 3}
   player: {fileID: 1367410853}
+  enemy: {fileID: 0}
 --- !u!1 &1646190155
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,6 +653,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 491493901410386534, guid: e85505bb0dc0f004e8fd137332a62fc8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2447206598886698834, guid: e85505bb0dc0f004e8fd137332a62fc8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4765562066337884588, guid: e85505bb0dc0f004e8fd137332a62fc8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -667,7 +708,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9024025121165105248, guid: e85505bb0dc0f004e8fd137332a62fc8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1566887378}
   m_SourcePrefab: {fileID: 100100000, guid: e85505bb0dc0f004e8fd137332a62fc8, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
