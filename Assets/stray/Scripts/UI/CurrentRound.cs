@@ -7,8 +7,13 @@ public class CurrentRound : MonoBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI roundText;
+    private GameManager gm;
 
-    
+    void Start()
+    {
+        gm = GameManager.Instance;
+    }
+
     void Update()
     {
         if (roundText != null)
