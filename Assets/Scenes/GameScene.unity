@@ -1847,7 +1847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &705507994
 Light:
   m_ObjectHideFlags: 0
@@ -3943,6 +3943,10 @@ PrefabInstance:
       propertyPath: m_PreserveAspect
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2447206598886698834, guid: e85505bb0dc0f004e8fd137332a62fc8, type: 3}
+      propertyPath: timebar
+      value: 
+      objectReference: {fileID: 2095572326}
     - target: {fileID: 2447206598886698834, guid: e85505bb0dc0f004e8fd137332a62fc8, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -6263,6 +6267,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2091384199}
   m_CullTransparentMesh: 1
+--- !u!114 &2095572326 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1849240873137051328, guid: e85505bb0dc0f004e8fd137332a62fc8, type: 3}
+  m_PrefabInstance: {fileID: 1218072395}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2120889620
 GameObject:
   m_ObjectHideFlags: 0

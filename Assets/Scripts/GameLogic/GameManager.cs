@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -164,36 +165,52 @@ public class GameManager : MonoBehaviour
         if (player == null) return;
         
         Vector3 targetPos = new Vector3(1.5f, 0f, 1.5f); // Default position
+        Quaternion targetRot = Quaternion.identity; // Default rotation
 
         if (currentMapInstance != null)
         {
-            Transform spawnPoint = currentMapInstance.transform.Find("SpawnPoint");
+            // User specified structure: currentMapInstance -> SpawnPoints -> PlayerSpawnPoint
+            Transform spawnPoint = currentMapInstance.transform.Find("SpawnPoints/PlayerSpawnPoint");
             if (spawnPoint != null)
             {
                 targetPos = spawnPoint.position;
-                player.transform.rotation = spawnPoint.rotation;
+                targetRot = spawnPoint.rotation;
             }
         }
 
         player.transform.position = targetPos;
+        player.transform.rotation = targetRot;
     }
+    
     void MoveEnemyToSpawnPoint()
     {
         GameObject enemy = GameObject.FindWithTag("Monster");
         if (enemy == null) return;
         
         Vector3 targetPos = new Vector3(1.5f, 0f, 1.5f); // Default position
+        Quaternion targetRot = Quaternion.identity; // Default rotation
 
         if (currentMapInstance != null)
         {
-            Transform spawnPoint = currentMapInstance.transform.Find("SpawnPoint");
+            // User specified structure: currentMapInstance -> SpawnPoints -> MonsterSpawnPoint
+            Transform spawnPoint = currentMapInstance.transform.Find("SpawnPoints/MonsterSpawnPoint");
             if (spawnPoint != null)
             {
                 targetPos = spawnPoint.position;
-                enemy.transform.rotation = spawnPoint.rotation;
+                targetRot = spawnPoint.rotation;
             }
         }
 
-        enemy.transform.position = targetPos;
+        NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.Warp(targetPos);
+            enemy.transform.rotation = targetRot;
+        }
+        else
+        {
+            enemy.transform.position = targetPos;
+            enemy.transform.rotation = targetRot;
+        }
     }
 }
