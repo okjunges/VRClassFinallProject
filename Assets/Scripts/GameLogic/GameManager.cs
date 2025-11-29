@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
             case GameState.MonsterTurn:
                 // 몬스터 턴 시작 로직
                 UIManager.Instance.SetInteractionPrompt(false, "");
-                UI.SetActive(false);
+                // UI.SetActive(false);
                 PlayerControl.Instance.OffCamera(); // 플레이어 카메라 비활성화
                 MonsterLogic.Instance.OnCamera();   // 몬스터 카메라 활성화
                 BakeNewMap.Instance.BakeNow();      // 벽 바뀐 맵 다시 굽기

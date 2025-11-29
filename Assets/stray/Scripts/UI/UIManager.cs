@@ -21,29 +21,6 @@ public class UIManager : MonoBehaviour
         if (Instance == null) Instance = this;
     }
 
-    void Update()
-    {
-        // Toggle Debug UI with backtick
-        if (Input.GetKeyDown(KeyCode.BackQuote))
-        {
-            showDebugUI = !showDebugUI;
-            
-            // Unlock cursor when UI is open
-            if (showDebugUI)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            else
-            {
-                // Only lock if we are not holding Alt (PlayerControl logic might conflict, but this is a toggle)
-                // Ideally PlayerControl manages cursor, but for DebugUI we need control.
-                // Let's just set it, PlayerControl Update might override it if not careful.
-                // For now, let's leave cursor logic to PlayerControl mostly, but unlock here is useful.
-            }
-        }
-    }
-
     public void SetInteractionPrompt(bool isVisible, string text = "")
     {
         showInteractionPrompt = isVisible;
